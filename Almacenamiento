@@ -1,0 +1,51 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class AppAlmacenamiento {
+    public static void main(String[] args) {
+        // Verificar que se proporcionen los argumentos necesarios
+        if (args.length != 5) {
+            System.out.println("Se requieren 5 argumentos: DNI, Nombre, Apellidos, Nota_Media, Fecha_Nacimiento");
+            return;
+        }
+
+        // Obtener los argumentos
+        String dni = args[0];
+        String nombre = args[1];
+        String apellidos = args[2];
+        double notaMedia = Double.parseDouble(args[3]);
+        String fechaNacimiento = args[4];
+
+        // Crear un objeto Estudiante
+        Estudiante estudiante = new Estudiante(dni, nombre, apellidos, notaMedia, fechaNacimiento);
+        almacenarEstudiante(estudiante);
+    }
+
+    private static void almacenarEstudiante(Estudiante estudiante) {
+        // Configuración de la conexión
+        String url = "jdbc:mysql://localhost:3306/escuela"; // Cambia la URL según tu configuración
+        String usuario = "root";
+        String contraseña = "1111";
+
+        try (Connection connection = DriverManager.getConnection(url, usuario, contraseña)) {
+            // Sentencia SQL para insertar un estudiante en la tabla "estudiantes"
+            String sql = "INSERT INTO estudiantes (dni, nombre, apellidos, nota_media, fecha_nacimiento) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Establecer los valores de los parámetros
+                preparedStatement.setString(1, estudiante.getDni());
+                preparedStatement.setString(2, estudiante.getNombre());
+                preparedStatement.setString(3, estudiante.getApellidos());
+                preparedStatement.setDouble(4, estudiante.getNotaMedia());
+                preparedStatement.setString(5, estudiante.getFechaNacimiento());
+
+                // Ejecutar la sentencia SQL
+                preparedStatement.executeUpdate();
+                System.out.println("Estudiante almacenado en la base de datos.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
