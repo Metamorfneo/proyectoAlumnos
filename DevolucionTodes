@@ -1,0 +1,46 @@
+import java.sql.*;
+
+public class AppDevolucionTodos {
+    public static void main(String[] args) {
+        // Configuración de la conexión
+        String url = "jdbc:mysql://localhost:3306/escuela"; // Cambia la URL según tu configuración
+        String usuario = "root";
+        String contraseña = "1111";
+
+        try (Connection connection = DriverManager.getConnection(url, usuario, contraseña)) {
+            // Sentencia SQL para obtener todos los estudiantes de la tabla "estudiantes"
+            String sql = "SELECT * FROM estudiantes";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Ejecutar la consulta SQL
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                // Verificar si hay resultados
+                if (!resultSet.isBeforeFirst()) {
+                    System.out.println("No hay estudiantes en la base de datos.");
+                } else {
+                    // Iterar sobre los resultados y mostrar los datos de cada estudiante
+                    System.out.println("Lista de Estudiantes:");
+                    while (resultSet.next()) {
+                        String dni = resultSet.getString("dni");
+                        String nombre = resultSet.getString("nombre");
+                        String apellidos = resultSet.getString("apellidos");
+                        double notaMedia = resultSet.getDouble("nota_media");
+                        String fechaNacimiento = resultSet.getString("fecha_nacimiento");
+
+                        System.out.println("DNI: " + dni);
+                        System.out.println("Nombre: " + nombre);
+                        System.out.println("Apellidos: " + apellidos);
+                        System.out.println("Nota Media: " + notaMedia);
+                        System.out.println("Fecha de Nacimiento: " + fechaNacimiento);
+                        System.out.println("-------------------------");
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
