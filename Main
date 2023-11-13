@@ -3,7 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
-    public static void main(String[] args) {
+   static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
         // Menú de selección de proceso
         int opcion;
         do {
@@ -11,15 +12,12 @@ public class App {
             System.out.println("1. Almacenamiento");
             System.out.println("2. Proceso de Devolución de Alumnos");
             System.out.println("3. Salir");
-
-            opcion = obtenerEnteroDelUsuario("Ingrese el número de la opción: ");
-
-            switch (opcion) {
+            switch (opcion = sc.nextInt()) {
                 case 1:
-                    ejecutarProceso("AlmacenamientoBBDD.jar");
+                    ejecutarProcesoAlmacenamiento();
                     break;
                 case 2:
-                    ejecutarProceso("DevolucionBBDD.jar");
+                    ejecutarProcesoDevolucion();
                     break;
                 case 3:
                     System.out.println("Saliendo del programa.");
@@ -30,48 +28,79 @@ public class App {
         } while (opcion != 3);
     }
 
-    // Método para ejecutar un proceso JAR
-    private static void ejecutarProceso(String nombreJar) {
+    private static void ejecutarProcesoDevolucion() throws IOException {
+
+        System.out.println("1. Buscar alumno por DNI\n"+
+                "2. Mostrar todos los alumnos");
+       int opcion = sc.nextInt();
+        if (opcion == 1) {
+            System.out.println("Ingresa el DNI del estudiante");
+            String DNI = sc.nextLine();
+            String comando = "java - jar DevolucionBBDD.jar " + DNI;
+            Process proceso = Runtime.getRuntime().exec(comando);
+            Scanner resultScanner = new Scanner(proceso.getInputStream());
+            while (resultScanner.hasNextLine()) {
+                System.out.println(resultScanner.nextLine());
+            }
+        }else if (opcion == 2){
+            System.out.println("Se mostraran todos los estudiantes");
+            String comando = "java - jar DevolucionTodesBBDD.jar ";
+            Process proceso = Runtime.getRuntime().exec(comando);
+            Scanner resultScanner = new Scanner(proceso.getInputStream());
+            while (resultScanner.hasNextLine()) {
+                System.out.println(resultScanner.nextLine());
+        }
+
+    }}
+
+
+    private static void ejecutarProcesoAlmacenamiento(){
+
         try {
-            // Comando para ejecutar el proceso JAR
-            String comando = "java -jar lib/" + nombreJar;
+
+            System.out.print("Ingrese el DNI del estudiante: ");
+            String dni = sc.nextLine();
+            sc.next();
+
+            System.out.print("Ingrese el Nombre del estudiante: ");
+            String nombre = sc.nextLine();
+            sc.next();
+
+            System.out.print("Ingrese los Apellidos del estudiante: ");
+            String apellidos = sc.nextLine();
+            sc.next();
+
+            System.out.print("Ingrese la Nota Media del estudiante: ");
+            String notaMedia = sc.nextLine();
+            sc.nextLine();
+
+            System.out.print("Ingrese la Fecha de Nacimiento del estudiante (YYYY-MM-DD): ");
+            String fechaNacimiento = sc.nextLine();
+
+            // Comando para ejecutar el proceso de almacenamiento JAR con argumentos
+            String[] Estudiante = new String[5];
+            Estudiante[0] = dni;
+            Estudiante[1] = nombre;
+            Estudiante[2] = apellidos;
+            Estudiante[3] = notaMedia;
+            Estudiante[4] = fechaNacimiento;
+
+            String comando = "java -jar AlmacenamientoBBDD.jar " + Arrays.toString(Estudiante);
 
             // Ejecutar el proceso y esperar a que termine
             Process proceso = Runtime.getRuntime().exec(comando);
-            proceso.waitFor();
+
 
             // Mostrar la salida del proceso
-            BufferedReader reader = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                System.out.println(linea);
+            Scanner resultScanner = new Scanner(proceso.getInputStream());
+            while (resultScanner.hasNextLine()) {
+                System.out.println(resultScanner.nextLine());
             }
 
-            // Mostrar mensajes de error si hubo algún problema
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(proceso.getErrorStream()));
-            while ((linea = errorReader.readLine()) != null) {
-                System.err.println(linea);
-            }
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    // Método auxiliar para obtener un entero del usuario
-    private static int obtenerEnteroDelUsuario(String mensaje) {
-        int valor = 0;
-        boolean entradaValida = false;
-        do {
-            try {
-                System.out.print(mensaje);
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                valor = Integer.parseInt(br.readLine());
-                entradaValida = true;
-            } catch (IOException | NumberFormatException e) {
-                System.out.println("Por favor, ingrese un número válido.");
-            }
-        } while (!entradaValida);
-        return valor;
     }
-    }
+}
 
