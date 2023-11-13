@@ -2,17 +2,14 @@ import java.sql.*;
 
 public class AppDevolucion {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/escuela"; // Cambia la URL según tu configuración
+        String url = "jdbc:mysql://127.0.0.1:3306/";
         String usuario = "root";
-        String contraseña = "1111";
+        String contrasena = "1111";
 
-        try (Connection connection = DriverManager.getConnection(url, usuario, contraseña)) {
+        try (Connection connection = DriverManager.getConnection(url, usuario, contrasena)) {
             // Sentencia SQL para buscar un estudiante por DNI en la tabla "estudiantes"
             String sql = "SELECT * FROM estudiantes WHERE dni = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                // Establecer el valor del parámetro
-
-
                 // Ejecutar la consulta SQL
                 ResultSet resultSet = preparedStatement.executeQuery();
 
