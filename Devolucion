@@ -21,7 +21,7 @@ public class AppDevolucion {
                     // Obtener los datos del estudiante
                     String nombre = resultSet.getString("nombre");
                     String apellidos = resultSet.getString("apellidos");
-                    double notaMedia = resultSet.getDouble("nota_media");
+                    String notaMedia = resultSet.getString("nota_media");
                     String fechaNacimiento = resultSet.getString("fecha_nacimiento");
 
                     // Mostrar los datos del estudiante por pantalla
