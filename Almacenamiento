@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class AppAlmacenamiento {
     public static void main(String[] args) {
-       // Verificar que se proporcionen los argumentos necesarios
+        // Verificar que se proporcionen los argumentos necesarios
         if (args.length != 5) {
             System.out.println("Se requieren 5 argumentos: DNI, Nombre, Apellidos, Nota_Media, Fecha_Nacimiento");
             return;
@@ -25,7 +25,7 @@ public class AppAlmacenamiento {
 
     private static void almacenarEstudiante(Estudiante estudiante) {
         // Configuración de la conexión
-        String url = "jdbc:mysql://localhost:3306/escuela";
+        String url = "jdbc:mysql://127.0.0.1:3306";
         String usuario = "root";
         String contrasena = "1111";
 
@@ -49,3 +49,4 @@ public class AppAlmacenamiento {
         }
     }
 }
+
