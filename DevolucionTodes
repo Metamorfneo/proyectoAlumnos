@@ -24,7 +24,7 @@ public class AppDevolucionTodos {
                         String dni = resultSet.getString("dni");
                         String nombre = resultSet.getString("nombre");
                         String apellidos = resultSet.getString("apellidos");
-                        double notaMedia = resultSet.getDouble("nota_media");
+                        String notaMedia = resultSet.getString("nota_media");
                         String fechaNacimiento = resultSet.getString("fecha_nacimiento");
 
                         System.out.println("DNI: " + dni);
