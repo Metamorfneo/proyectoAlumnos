@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class App {
-   static Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws IOException {
         // Menú de selección de proceso
         int opcion;
@@ -32,7 +34,7 @@ public class App {
 
         System.out.println("1. Buscar alumno por DNI\n"+
                 "2. Mostrar todos los alumnos");
-       int opcion = sc.nextInt();
+        int opcion = sc.nextInt();
         if (opcion == 1) {
             System.out.println("Ingresa el DNI del estudiante");
             String DNI = sc.nextLine();
@@ -49,9 +51,9 @@ public class App {
             Scanner resultScanner = new Scanner(proceso.getInputStream());
             while (resultScanner.hasNextLine()) {
                 System.out.println(resultScanner.nextLine());
-        }
+            }
 
-    }}
+        }}
 
 
     private static void ejecutarProcesoAlmacenamiento(){
@@ -76,8 +78,6 @@ public class App {
 
             System.out.print("Ingrese la Fecha de Nacimiento del estudiante (YYYY-MM-DD): ");
             String fechaNacimiento = sc.nextLine();
-
-            // Comando para ejecutar el proceso de almacenamiento JAR con argumentos
             String[] Estudiante = new String[5];
             Estudiante[0] = dni;
             Estudiante[1] = nombre;
@@ -102,5 +102,4 @@ public class App {
         }
 
     }
-}
-
+    }
